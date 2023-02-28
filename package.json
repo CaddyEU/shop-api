@@ -19,6 +19,7 @@
   "homepage": "https://github.com/CaddyEU/games-api#readme",
   "dependencies": {
     "express": "^4.18.2",
-    "swagger-ui-express": "^4.6.0"
+    "swagger-ui-express": "^4.6.0",
+    "yamljs": "^0.3.0"
   }
 }
