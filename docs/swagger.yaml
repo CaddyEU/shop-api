@@ -1,13 +1,13 @@
 openapi: 3.0.2
 info:
-    title: games-api
+    title: shop-api
     version: 1.0.0
-    description: '### This is a Swagger UI for my Games API'
+    description: '### This is a Swagger UI for my Shop API'
 paths:
-    /games:
+    /items:
         get:
             tags:
-                - games
+                - items
             responses:
                 '200':
                     content:
@@ -21,19 +21,19 @@ paths:
                                     value:
                                         - Witcher 3
                                         - Cyberpunk 2077
-                    description: ' Returns a list of games'
-            summary: Get a list of all games
-            description: Returns a list of all games in API
+                    description: ' Returns a list of items'
+            summary: Get a list of all items
+            description: Returns a list of all items in API
         post:
             requestBody:
                 description: A new game to be created
                 required: true
             tags:
-                - new-game
+                - new-item
             responses:
                 '201':
                     content:
-                        new-game: {}
+                        new-item: {}
                     description: Successfully created
                 '400':
                     content:
@@ -42,9 +42,9 @@ paths:
                                 Bad Request:
                                     value: Something is missing
                     description: 'One or all params are missing. '
-            summary: New game
+            summary: New item
             description: ''
-    '/games/{id}':
+    '/items/{id}':
         get:
             tags:
                 - details
@@ -58,8 +58,8 @@ paths:
                                     type: string
                             examples:
                                 Full details of a given game:
-                                    value: '{id:3, name: "Minecraft", price: 26.99}'
-                    description: Returns fill details of a given id game
+                                    value: '{id:3, name: "Nvidia RTX 3070", price: 1100.99}'
+                    description: Returns fill details of a given id item
                 '404':
                     content:
                         application/json:
@@ -67,11 +67,12 @@ paths:
                                 $ref: '#/components/schemas/error'
                             examples:
                                 Game /w+ was not found:
-                                    value: Game \\w+ was not found in game array
-                    description: Game was not found in games array
+                                    value:
+                                        error: Item was not found
+                    description: Item was not found in items array
             operationId: id
-            summary: Get full details of a game
-            description: Returns full details of a given id game
+            summary: Get full details of a given item
+            description: Returns full details of a given item
         delete:
             requestBody:
                 content:
@@ -79,6 +80,11 @@ paths:
                 required: false
             tags:
                 - delete
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
             responses:
                 '204':
                     description: Empty
@@ -102,7 +108,19 @@ components:
                     type: string
             example:
                 error: Error message.
-        new-game:
+        delete-item:
+            title: Root Type for delete-item
+            description: Will remove item
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    format: int32
+                    type: integer
+            example:
+                id: 1
+        new-item:
             title: Root Type for new-game
             description: Try it out!
             required:
@@ -118,15 +136,3 @@ components:
             example:
                 name: Papers please
                 price: 0.99
-        delete-item:
-            title: Root Type for delete-item
-            description: Will remove item
-            required:
-                - id
-            type: object
-            properties:
-                id:
-                    format: int32
-                    type: integer
-            example:
-                id: 1
