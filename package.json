@@ -1,5 +1,5 @@
 {
-  "name": "games-api",
+  "name": "shop-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CaddyEU/games-api.git"
+    "url": "git+https://github.com/CaddyEU/shop-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CaddyEU/games-api/issues"
+    "url": "https://github.com/CaddyEU/shop-api/issues"
   },
-  "homepage": "https://github.com/CaddyEU/games-api#readme",
+  "homepage": "https://github.com/CaddyEU/shop-api#readme",
   "dependencies": {
     "express": "^4.18.2",
     "swagger-ui-express": "^4.6.0",
