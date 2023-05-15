@@ -1,11 +1,11 @@
 module.exports = (sequelize,Sequelize) => {
     const Item = sequelize.define("Item", {
-        id: {
+        ItemId: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
+        ItemName: {
             type: Sequelize.STRING,
             allowNull: false
         },
@@ -15,6 +15,9 @@ module.exports = (sequelize,Sequelize) => {
         category:{
             type: Sequelize.STRING,
             allowNull: false
+        },
+        price: {
+            type: Sequelize.FLOAT
         },
         posted: {
             type: Sequelize.DATEONLY

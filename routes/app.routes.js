@@ -1,6 +1,7 @@
 const ItemsController = require("../controllers/ItemsController.js")
 const UsersController = require("../controllers/UsersController.js")
 const ReviewsController = require("../controllers/ReviewsController.js")
+const helpers = require("../controllers/helpers.js")
 
 module.exports = (app) => {
     app.route("/items")

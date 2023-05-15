@@ -3,7 +3,7 @@ const { getBaseUrl } = require("./helpers")
 const Item = db.items
 
 exports.getAll = async (req,res)=>{
-    const items = await Item.findAll({attributes:["id", "name"]})
+    const items = await Item.findAll({attributes:["ItemId", "ItemName", "price"]})
     res.send(JSON.stringify(items))
 }
 exports.createNew = async (req,res)=>{ 
@@ -12,7 +12,7 @@ exports.createNew = async (req,res)=>{
         item = await Item.create(req.body,
             {
                 logging: console.log,
-                fields: ["name","description","category","posted"]
+                fields: ["ItemName","description","category","price", "posted"]
             })
     } catch (error) {
         if (error instanceof db.Sequelize.ValidationError) {

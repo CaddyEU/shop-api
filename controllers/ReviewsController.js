@@ -16,8 +16,7 @@ exports.getAll = async (req, res) => {
       { model: User,
       attributes: [
         "UserName",
-        "UserId",
-        "mail"
+        "UserId"
       ]},
       { model: Items,
       attributes: [
