@@ -17,10 +17,10 @@ paths:
                                 items:
                                     type: string
                             examples:
-                                List of games:
+                                List of items:
                                     value:
-                                        - Witcher 3
-                                        - Cyberpunk 2077
+                                        - Samsung Galaxy S23
+                                        - Microwave oven Polaris
                     description: ' Returns a list of items'
             summary: Get a list of all items
             description: Returns a list of all items in API
@@ -97,6 +97,40 @@ paths:
                 name: id
                 in: path
                 required: true
+    /users: {}
+    '/users/{id}': {}
+    /reviews:
+        get:
+            tags:
+                - reviews
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                List of reviews:
+                                    value:
+                                        - Very good
+                                        - Nice
+                    description: Returns a list of reviews
+            summary: Get a list of all reviews
+            description: Returns a list of all reviews in API
+    '/reviews/{id}':
+        get:
+            tags:
+                - details
+            operationId: id
+            summary: Get a full details of a given review
+            description: Returns full details of a given review
+        parameters:
+            -
+                name: id
+                in: path
+                required: true
 components:
     schemas:
         error:
@@ -134,5 +168,5 @@ components:
                     format: float
                     type: number
             example:
-                name: Papers please
-                price: 0.99
+                name: Apple Watch Series 7
+                price: 499.99
