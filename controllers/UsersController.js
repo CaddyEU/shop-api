@@ -5,7 +5,7 @@ const Reviews = db.reviews
 const { getBaseUrl } = require('./helpers');
 
 exports.getAll = async (req,res)=>{
-    const users = await Users.findAll({attributes:["UserId","UserName"]})
+    const users = await Users.findAll({attributes:["id","name"]})
     if (users.length == 0){
         res.send({"message":"No users exist"})
   } else {

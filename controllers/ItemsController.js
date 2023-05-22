@@ -12,7 +12,7 @@ exports.createNew = async (req,res)=>{
         item = await Item.create(req.body,
             {
                 logging: console.log,
-                fields: ["Itemname","description","category","price", "posted"]
+                fields: ["ItemName","description","category","price", "posted"]
             })
     } catch (error) {
         if (error instanceof db.Sequelize.ValidationError) {

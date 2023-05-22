@@ -19,17 +19,25 @@ paths:
                             examples:
                                 List of items:
                                     value:
-                                        - Samsung Galaxy S23
-                                        - Microwave oven Polaris
+                                        -
+                                            id: 1
+                                            name: Samsung Galaxy S23
+                                            price: 999.9
                     description: ' Returns a list of items'
             summary: Get a list of all items
             description: Returns a list of all items in API
         post:
             requestBody:
                 description: A new game to be created
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                type: string
                 required: true
             tags:
-                - new-item
+                - items
             responses:
                 '201':
                     content:
@@ -42,12 +50,22 @@ paths:
                                 Bad Request:
                                     value: Something is missing
                     description: 'One or all params are missing. '
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                error message:
+                                    value:
+                                        error: 'Something went wrong on our side. Sorry :('
+                    description: 'Something went wrong on our side. Sorry :('
             summary: New item
             description: ''
     '/items/{id}':
         get:
             tags:
-                - details
+                - items
             responses:
                 '200':
                     content:
@@ -70,16 +88,25 @@ paths:
                                     value:
                                         error: Item was not found
                     description: Item was not found in items array
-            operationId: id
             summary: Get full details of a given item
             description: Returns full details of a given item
-        delete:
-            requestBody:
-                content:
-                    delete-item: {}
-                required: false
+        put:
             tags:
-                - delete
+                - items
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: Updated
+            summary: Update item
+            description: Updates selected item
+        delete:
+            tags:
+                - items
             parameters:
                 -
                     name: id
@@ -87,9 +114,23 @@ paths:
                     required: true
             responses:
                 '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/delete-item'
                     description: Empty
                 '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
                     description: The item you're looking for is not here anymore
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Something went wrong
             summary: Delete item
             description: Will erase
         parameters:
@@ -97,7 +138,55 @@ paths:
                 name: id
                 in: path
                 required: true
-    /users: {}
+    /users:
+        get:
+            tags:
+                - users
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                list of users:
+                                    value:
+                                        -
+                                            id: 1
+                                            name: DonaldTrump
+                    description: Returns a list of all users
+            summary: Get a list of users
+            description: Returns a list of all users
+        post:
+            tags:
+                - users
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/new-user'
+                            examples:
+                                NewUser:
+                                    value:
+                                        UserName: Josh
+                    description: New user created
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Invalid Input
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Something went wrong
+            summary: Create a new user
+            description: Creates a new user
     '/users/{id}': {}
     /reviews:
         get:
@@ -119,13 +208,57 @@ paths:
                     description: Returns a list of reviews
             summary: Get a list of all reviews
             description: Returns a list of all reviews in API
-    '/reviews/{id}':
-        get:
+        post:
             tags:
-                - details
-            operationId: id
-            summary: Get a full details of a given review
-            description: Returns full details of a given review
+                - reviews
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/new-review'
+                    description: |
+                        Created
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: One or all Params are missing
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Something went wrong
+            summary: Creates a new review
+            description: New review to be created
+    '/reviews/{id}':
+        delete:
+            tags:
+                - review
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/delete-item'
+                    description: |
+                        No content
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: No review found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Something went wrong
+            summary: Delete review
+            description: Deletes selected review
         parameters:
             -
                 name: id
@@ -170,3 +303,21 @@ components:
             example:
                 name: Apple Watch Series 7
                 price: 499.99
+        new-user:
+            description: Creates a new user
+            required:
+                - UserName
+            type: object
+            properties:
+                UserName:
+                    description: Choose UserName
+                    type: string
+        new-review:
+            description: Create a review
+            required:
+                - Review
+            type: object
+            properties:
+                Review:
+                    description: ''
+                    type: string

@@ -1,11 +1,11 @@
 module.exports = (sequelize,Sequelize) => {
     const Item = sequelize.define("Item", {
-        ItemId: {
+        id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        ItemName: {
+        name: {
             type: Sequelize.STRING,
             allowNull: false
         },
