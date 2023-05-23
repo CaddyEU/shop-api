@@ -22,11 +22,13 @@ db.sequelize = sequelize
 
 db.items = require("./models/Item")(sequelize, Sequelize)
 db.users = require("./models/User")(sequelize, Sequelize)
-db.Review = require("./models/Review")(sequelize, Sequelize, db.items,db.users)
+db.reviews = require("./models/Review")(sequelize, Sequelize, db.items,db.users)
 
 async function Sync() {
+  console.log("Begin sync");
   //await sequelize.sync({force:true}) // Erase all and recreate
   await sequelize.sync({ alter: true }) // Alter existing tables to match the model
+  console.log("Sync Done")
 }
 
 module.exports = { db, Sync }

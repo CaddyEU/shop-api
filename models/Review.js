@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize, Item, User) => {
             allowNull: false,
             references: {
                 model: Item,
-                key: "ItemId"
+                key: "id"
             }
         },
         UserId: {

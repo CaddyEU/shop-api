@@ -22,19 +22,19 @@ paths:
                                         -
                                             id: 1
                                             name: Samsung Galaxy S23
+                                            description: Brand New
+                                            category: Phones
                                             price: 999.9
                     description: ' Returns a list of items'
             summary: Get a list of all items
             description: Returns a list of all items in API
         post:
             requestBody:
-                description: A new game to be created
+                description: A new item to be created
                 content:
                     application/json:
                         schema:
-                            type: array
-                            items:
-                                type: string
+                            $ref: '#/components/schemas/new-item'
                 required: true
             tags:
                 - items
@@ -101,6 +101,13 @@ paths:
                                 type: array
                                 items:
                                     type: string
+                            examples:
+                                update:
+                                    value:
+                                        name: Apple Watch Series 7
+                                        description: Brand new
+                                        category: Watches
+                                        price: 499.99
                     description: Updated
             summary: Update item
             description: Updates selected item
@@ -160,6 +167,16 @@ paths:
             summary: Get a list of users
             description: Returns a list of all users
         post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-user'
+                        examples:
+                            UserName:
+                                value:
+                                    UserName: DesiredUserName
+                required: true
             tags:
                 - users
             responses:
@@ -187,7 +204,89 @@ paths:
                     description: Something went wrong
             summary: Create a new user
             description: Creates a new user
-    '/users/{id}': {}
+    '/users/{id}':
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                User:
+                                    value:
+                                        -
+                                            UserId: 1
+                                            UserName: DonaldTrump
+                    description: Done
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                not found:
+                                    value:
+                                        error: user not found
+                    description: User not found
+            summary: Returns info about user
+            description: Shows user info
+        put:
+            tags:
+                - users
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Update UserName:
+                                    value:
+                                        UserName: UserName
+                    description: Updated
+            summary: Update user
+            description: Updates user info
+        delete:
+            tags:
+                - users
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/delete-item'
+                    description: Deleted
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: User not here anymore
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Something went wrong
+            summary: Delete user
+            description: Deletes user
+        parameters:
+            -
+                name: id
+                in: path
+                required: true
     /reviews:
         get:
             tags:
@@ -209,6 +308,19 @@ paths:
             summary: Get a list of all reviews
             description: Returns a list of all reviews in API
         post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-review'
+                        examples:
+                            Review:
+                                value:
+                                    -
+                                        reviewBody: Text
+                                        UserId: ''
+                                        ItemId: ''
+                required: true
             tags:
                 - reviews
             responses:
@@ -217,6 +329,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/new-review'
+                            examples:
+                                Review:
+                                    value:
+                                        -
+                                            reviewBody: Text
+                                            UserId: ''
+                                            ItemId: ''
                     description: |
                         Created
                 '400':
@@ -236,7 +355,7 @@ paths:
     '/reviews/{id}':
         delete:
             tags:
-                - review
+                - reviews
             responses:
                 '204':
                     content:
@@ -293,6 +412,8 @@ components:
             required:
                 - price
                 - name
+                - description
+                - category
             type: object
             properties:
                 name:
@@ -300,8 +421,16 @@ components:
                 price:
                     format: float
                     type: number
+                description:
+                    description: ''
+                    type: string
+                category:
+                    description: ''
+                    type: string
             example:
                 name: Apple Watch Series 7
+                description: Brand new
+                category: Watches
                 price: 499.99
         new-user:
             description: Creates a new user
@@ -312,12 +441,24 @@ components:
                 UserName:
                     description: Choose UserName
                     type: string
+            example:
+                UserName: DesiredUsername
         new-review:
             description: Create a review
             required:
-                - Review
+                - reviewBody
             type: object
             properties:
-                Review:
+                reviewBody:
                     description: ''
                     type: string
+                    example: |-
+                        {
+                            "reviewBody": "Text",
+                            "ItemId": "itemId",
+                            "UserId": "userID"
+                        }
+            example:
+                reviewBody: Text
+                ItemId: itemId
+                UserId: userID

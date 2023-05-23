@@ -20,7 +20,8 @@ exports.getAll = async (req, res) => {
       ]},
       { model: Items,
       attributes: [
-        "ItemId",
+        "id",
+        "name"
       ]},         
     ],
   })
@@ -37,7 +38,7 @@ exports.getAll = async (req, res) => {
       review = await Reviews.create(req.body, 
             {
                 logging:console.log, 
-                fields: ["reviewId","reviewDate", "UserId", "reviewBody"]
+                fields: ["UserId","reviewDate", "ItemId", "reviewBody"]
             })
     } catch (error){
         if (error instanceof db.Sequelize.ValidationError){

@@ -5,7 +5,7 @@ const Reviews = db.reviews
 const { getBaseUrl } = require('./helpers');
 
 exports.getAll = async (req,res)=>{
-    const users = await Users.findAll({attributes:["id","name"]})
+    const users = await Users.findAll({attributes:["UserId","UserName"]})
     if (users.length == 0){
         res.send({"message":"No users exist"})
   } else {
@@ -39,25 +39,21 @@ exports.createNew = async (req, res) =>{
     .location(`${getBaseUrl(req)}/users/${users.UserId}`)
     .json(users)   
 }
+
+
 exports.getById = async (req, res) => {
+    console.log("getById", req.params.UserId)
   const user = await Users.findByPk(req.params.UserId, {
-    logging: console.log,
-    include: {
-      model: Reviews,
-      attributes: ["reviewId","reviewDate", "reviewBody"],
-      include: {
-        model: Items,
-        attributes: ["id","name"]
-      }
-    },
-    order: [[Reviews,"reviewId","reviewBody"]]
-  })
+    logging: console.log,})
+
   if (user === null) {
     res.status(404).send({ error: "User not found" })
   } else {
     res.send(user)
   }
 }
+
+
 exports.updateById = async (req, res) =>{
     let users = await Users.findByPk(req.params.UserId, {logging: console.Log})
     if(users === null){
