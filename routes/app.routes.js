@@ -24,5 +24,6 @@ module.exports = (app) => {
         .get(ReviewsController.getAll)
         .post(ReviewsController.createNew)    //Create
     app.route("/reviews/:id")
+        .get(ReviewsController.getById)
         .delete(ReviewsController.deleteById) //Delete
 }

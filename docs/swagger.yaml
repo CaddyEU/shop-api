@@ -353,6 +353,26 @@ paths:
             summary: Creates a new review
             description: New review to be created
     '/reviews/{id}':
+        get:
+            tags:
+                - reviews
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: Returs specific review
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: Review was not found
+            summary: Specific review
+            description: ''
         delete:
             tags:
                 - reviews

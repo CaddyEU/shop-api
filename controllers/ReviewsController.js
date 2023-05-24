@@ -8,7 +8,7 @@ const QueryTypes = db.Sequelize.QueryTypes
 exports.getAll = async (req, res) => {
   const review = await Reviews.findAll({
     attributes: [
-      "reviewId", 
+      "id", 
       "reviewDate", 
       "reviewBody"
     ],
@@ -16,7 +16,7 @@ exports.getAll = async (req, res) => {
       { model: User,
       attributes: [
         "UserName",
-        "UserId"
+        "id"
       ]},
       { model: Items,
       attributes: [
@@ -51,18 +51,18 @@ exports.getAll = async (req, res) => {
         return
     }
     res.status(201)
-    .location(`${getBaseUrl(req)}/reviews/${review.reviewId}`)
+    .location(`${getBaseUrl(req)}/reviews/${review.id}`)
     .json(review)   
   }
  
 
 exports.getById = async (req, res) =>{
-    const review = await Reviews.findByPk(req.params.reviewId, {
-      include: [
-        { model: User},
-        { model: Items},         
-      ],
+    console.log("getById", req.params.id)
+    const review = await Reviews.findByPk(req.params.id, {
+      logging: console.log,
+      include: ["User", "Item"],
     })
+    console.log(review)
     if(review === null){
         res.status(404).send({"error": "No review found"})
     } else {
@@ -71,7 +71,7 @@ exports.getById = async (req, res) =>{
 }
 
 exports.getreviewDate = async (req, res) =>{
-  const review = await Reviews.findByPk(req.params.reviewId, {
+  const review = await Reviews.findByPk(req.params.id, {
     include: [     
       { model: User, as: 'User'},
     ],
@@ -80,7 +80,7 @@ exports.getreviewDate = async (req, res) =>{
       res.status(404).send({"error": "No review found"})
   } else {
       const sql = `SELECT reviews.reviewDate, 
-                  reviews.reviewId, reviews.reviewBody, users.UserName
+                  reviews.id, reviews.reviewBody, users.UserName
                   FROM reviews
                   JOIN users ON reviews.UserId = users.UserId
                   WHERE users.UserId = ${review};`
@@ -91,7 +91,7 @@ const sqlResult = await db.sequelize.query(sql, { type: QueryTypes.SELECT })
 
 
 exports.updateById = async (req, res) =>{
-  let review = await Reviews.findByPk(req.params.reviewId, {logging: console.Log})
+  let review = await Reviews.findByPk(req.params.id, {logging: console.Log})
   if(review === null){
       res.status(404).send({"error": "No review found"})
       return
@@ -113,7 +113,7 @@ exports.updateById = async (req, res) =>{
 }
 
 exports.deleteById = async (req, res) =>{
-  const review = await Reviews.findByPk(req.params.reviewId, {logging: console.Log})
+  const review = await Reviews.findByPk(req.params.id, {logging: console.Log})
   if(review === null){
       res.status(404).send({"error": "No review found"})
       return

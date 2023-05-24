@@ -5,7 +5,7 @@ const Reviews = db.reviews
 const { getBaseUrl } = require('./helpers');
 
 exports.getAll = async (req,res)=>{
-    const users = await Users.findAll({attributes:["UserId","UserName"]})
+    const users = await Users.findAll({attributes:["id","UserName"]})
     if (users.length == 0){
         res.send({"message":"No users exist"})
   } else {
@@ -19,7 +19,7 @@ exports.createNew = async (req, res) =>{
         users = await Users.create(req.body, 
             {
                 logging:console.log, 
-                fields: ["UserId", "UserName"]
+                fields: ["id", "UserName"]
             })
     } catch (error){
         if (error instanceof db.Sequelize.ValidationError){
@@ -36,15 +36,23 @@ exports.createNew = async (req, res) =>{
         return
     }
     res.status(201)
-    .location(`${getBaseUrl(req)}/users/${users.UserId}`)
+    .location(`${getBaseUrl(req)}/users/${users.id}`)
     .json(users)   
 }
 
 
 exports.getById = async (req, res) => {
-    console.log("getById", req.params.UserId)
-  const user = await Users.findByPk(req.params.UserId, {
-    logging: console.log,})
+    console.log("getById", req.params.id)
+    const user = await Users.findByPk(req.params.id, {
+      logging: console.log,
+    include: {
+        model: Reviews,
+        attributes: ["reviewDate", "reviewBody"],
+            include: [{ 
+                model: Items,
+                attributes: ["name"]},
+            ]}
+    })
 
   if (user === null) {
     res.status(404).send({ error: "User not found" })
@@ -55,7 +63,7 @@ exports.getById = async (req, res) => {
 
 
 exports.updateById = async (req, res) =>{
-    let users = await Users.findByPk(req.params.UserId, {logging: console.Log})
+    let users = await Users.findByPk(req.params.id, {logging: console.Log})
     if(users === null){
         res.status(404).send({"error": "No user found"})
         return
@@ -72,11 +80,11 @@ exports.updateById = async (req, res) =>{
         return
     }
     res.status(200)
-    .location(`${getBaseUrl(req)}/users/${users.UserId}`)
+    .location(`${getBaseUrl(req)}/users/${users.id}`)
     .json(users)
 }
 exports.deleteById = async (req, res) =>{
-    const users = await Users.findByPk(req.params.UserId, {logging: console.Log})
+    const users = await Users.findByPk(req.params.id, {logging: console.Log})
     if(users === null){
         res.status(404).send({"error": "No user found"})
         return

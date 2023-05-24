@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize, Item, User) => {
     const Review = sequelize.define("Review", {
-        reviewId: {
+        id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -28,7 +28,7 @@ module.exports = (sequelize, Sequelize, Item, User) => {
             allowNull: false,
             references: {
                 model: User,
-                key: "UserId"
+                key: "id"
             }
         }
     })
